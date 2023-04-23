@@ -37,9 +37,13 @@ const Form = () => {
 
 
   const parseTime = (timeStr: string): number => {
-    const [hours, minutes] = timeStr.split(/[時分]/).map(Number);
+    const hoursMatch = timeStr.match(/(\d+)時間/);
+    const minutesMatch = timeStr.match(/(\d+)分/);
+    const hours = hoursMatch ? parseInt(hoursMatch[1], 10) : 0;
+    const minutes = minutesMatch ? parseInt(minutesMatch[1], 10) : 0;
     return 60 * hours + minutes;
   };
+  
 
   const formatTime = (totalMinutes: number): string => {
     const hours = Math.floor(totalMinutes / 60);
