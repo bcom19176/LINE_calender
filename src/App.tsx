@@ -12,10 +12,10 @@ const Form = () => {
   const [duration, setDuration] = useState("10");
   const [freeTime, setFreeTime] = useState("1時間");
   const [travelTime, setTravelTime] = useState("30分");
-  const [prepTime, setPrepTime] = useState("30分");
-  const [startActivityTimeHour, setStartActivityTimeHour] = useState("8");
+  const [prepTime, setPrepTime] = useState("15分");
+  const [startActivityTimeHour, setStartActivityTimeHour] = useState("0");
   const [startActivityTimeMinute, setStartActivityTimeMinute] = useState("0");
-  const [endActivityTimeHour, setEndActivityTimeHour] = useState("23");
+  const [endActivityTimeHour, setEndActivityTimeHour] = useState("24");
   const [endActivityTimeMinute, setEndActivityTimeMinute] = useState("0");
 
   // LIFF initialization
