@@ -11,7 +11,8 @@ import Typography from '@mui/material/Typography';
 const Form = () => {
   const [duration, setDuration] = useState("10");
   const [freeTime, setFreeTime] = useState("1時間");
-  const [preparationTime, setPreparationTime] = useState("30分");
+  const [travelTime, setTravelTime] = useState("30分");
+  const [prepTime, setPrepTime] = useState("30分");
   const [startActivityTimeHour, setStartActivityTimeHour] = useState("8");
   const [startActivityTimeMinute, setStartActivityTimeMinute] = useState("0");
   const [endActivityTimeHour, setEndActivityTimeHour] = useState("23");
@@ -35,14 +36,26 @@ const Form = () => {
   }, []);
 
 
+  const parseTime = (timeStr: string): number => {
+    const [hours, minutes] = timeStr.split(/[時分]/).map(Number);
+    return 60 * hours + minutes;
+  };
+
+  const formatTime = (totalMinutes: number): string => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}時間${minutes}分`;
+  };
+
   const register = () => {
     const startActivityTime = `${startActivityTimeHour}時${String(startActivityTimeMinute).padStart(2, '0')}分`;
     const endActivityTime = `${endActivityTimeHour}時${String(endActivityTimeMinute).padStart(2, '0')}分`;
-  
+    const totalPreparationTime = formatTime(parseTime(travelTime) + parseTime(prepTime));
+
     const message: string = `カレンダー確認
 期間: ${duration}日間
 空き時間: ${freeTime}
-移動、準備時間: ${preparationTime}
+移動・準備時間: ${totalPreparationTime}
 開始時間: ${startActivityTime}
 終了時間: ${endActivityTime}`;
     liff
@@ -63,13 +76,14 @@ const Form = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     register();
-  
+
     // フォームをリセットします。
     setDuration("");
     setFreeTime("");
-    setPreparationTime("");
+    setTravelTime("");
+    setPrepTime("");
     setStartActivityTimeHour("");
     setStartActivityTimeMinute("");
     setEndActivityTimeHour("");
@@ -110,17 +124,33 @@ const Form = () => {
             </Select>
           </FormControl>
         </Box>
-  
+
         <Box mt={3}>
           <Typography variant="subtitle1" gutterBottom>
-            移動・準備時間
+            移動時間
           </Typography>
           <FormControl fullWidth>
             <Select
-              value={preparationTime}
-              onChange={(e) => setPreparationTime(e.target.value)}
+              value={travelTime}
+              onChange={(e) => setTravelTime(e.target.value)}
             >
-              {["15分", "30分", "45分", "1時間", "1時間15分", "1時間30分", "1時間45分", "2時間", "2時間15分", "2時間30分", "2時間45分", "3時間"].map((value) => (
+              {["0分","15分", "30分", "45分", "1時間", "1時間15分", "1時間30分", "1時間45分", "2時間", "2時間15分", "2時間30分", "2時間45分", "3時間"].map((value) => (
+                <MenuItem key={value} value={value}>{value}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
+        <Box mt={3}>
+          <Typography variant="subtitle1" gutterBottom>
+            準備時間
+          </Typography>
+          <FormControl fullWidth>
+            <Select
+              value={prepTime}
+              onChange={(e) => setPrepTime(e.target.value)}
+            >
+              {["0分","15分", "30分", "45分", "1時間", "1時間15分", "1時間30分", "1時間45分", "2時間", "2時間15分", "2時間30分", "2時間45分", "3時間"].map((value) => (
                 <MenuItem key={value} value={value}>{value}</MenuItem>
               ))}
             </Select>
@@ -138,7 +168,7 @@ const Form = () => {
                 onChange={(e) => setStartActivityTimeHour(e.target.value)}
                 style={{ width: "45%" }}
               >
-                {Array.from({ length: 24 }, (_, i) => i + 1).map((value) => (
+                {Array.from({ length: 25 }, (_, i) => i).map((value) => (
                   <MenuItem key={value} value={value}>
                     {value}
                   </MenuItem>
