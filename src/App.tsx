@@ -48,8 +48,13 @@ const Form = () => {
   const formatTime = (totalMinutes: number): string => {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    return `${hours}時間${minutes}分`;
+    if (hours === 0) {
+      return `${minutes}分`;
+    } else {
+      return `${hours}時間${minutes}分`;
+    }
   };
+  
 
   const register = () => {
     const startActivityTime = `${startActivityTimeHour}時${String(startActivityTimeMinute).padStart(2, '0')}分`;
